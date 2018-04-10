@@ -11,7 +11,11 @@ parser.add_argument('segment_count', type=str, default=10, help='number of chose
 parser.add_argument('fast', type=str, default=False, help='use fast approximation')
 args = parser.parse_args()
 
+def mod(a, b):
+	return a % b
+
 COLOURS = "bgrcmykw"
+FUNDICT = {'mod': mod, 'tanh': np.tanh, 'pow': pow}
 
 def assignColours(names):
 	"""
@@ -37,12 +41,12 @@ def visualise(original_functions, approximated_functions, var_name, var_range):
 	legend_names = []
 
 	for (name, expression) in original_functions:
-		fun_values = list(map(lambda value: eval(expression, {var_name: value}), var_values))
+		fun_values = list(map(lambda value: eval(expression, {var_name: value}, FUNDICT), var_values))
 		plt.plot(var_values, fun_values, color=colour_names[name], linestyle='solid')
 		legend_names.append(name + "_orig")
 
 	for (name, values) in approximated_functions:
-		plt.plot([i for i,j in values], [j for i,j in values], color=colour_names[name], linestyle='dashed')
+		plt.plot([i for i,j in values], [j for i,j in values], color=colour_names[name], linestyle=':', linewidth=5)
 		legend_names.append(name + "_aprox")
 
 	plt.legend(legend_names)
