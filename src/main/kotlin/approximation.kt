@@ -57,6 +57,26 @@ fun Formula.toEvaluable(varName: String?): Evaluable {
                         { x: Double -> args.drop(1).fold(args[0](x)) { a, b -> a / b(x) } }
                     }
                 }
+                "mod" -> {
+                    val f: Evaluable = if (args.size == 2) {
+                        { x: Double ->
+                            var a = args[0](x)
+                            val b = args[1](x)
+                            if (b < 0 || a < 0) error("Negative values not supported in mod")
+                            while (a > b) a -= b
+                            a
+                        }
+                    } else error("Modulo operation has two parameters")
+                    f
+                }
+                "tanh" -> {
+                    val f: Evaluable = if (args.size == 1) {
+                        { x: Double ->
+                            Math.tanh(args[0](x))
+                        }
+                    } else error("tanh has one parameter")
+                    f
+                }
                 varName -> { x: Double -> x }
                 else -> error("Unsupported function ${this.name}")
             }
