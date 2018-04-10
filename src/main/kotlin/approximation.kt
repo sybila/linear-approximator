@@ -66,7 +66,7 @@ fun Formula.toEvaluable(varName: String?): Evaluable {
                             while (a > b) a -= b
                             a
                         }
-                    } else error("Modulo operation has two parameters")
+                    } else error("Modulo operation has two arguments")
                     f
                 }
                 "tanh" -> {
@@ -74,7 +74,15 @@ fun Formula.toEvaluable(varName: String?): Evaluable {
                         { x: Double ->
                             Math.tanh(args[0](x))
                         }
-                    } else error("tanh has one parameter")
+                    } else error("tanh has one argument")
+                    f
+                }
+                "pow" -> {
+                    val f: Evaluable = if (args.size == 1) {
+                        { x: Double ->
+                            Math.pow(args[0](x), args[1](x))
+                        }
+                    } else error("pow has one argument")
                     f
                 }
                 varName -> { x: Double -> x }
