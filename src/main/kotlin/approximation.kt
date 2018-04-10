@@ -78,11 +78,11 @@ fun Formula.toEvaluable(varName: String?): Evaluable {
                     f
                 }
                 "pow" -> {
-                    val f: Evaluable = if (args.size == 1) {
+                    val f: Evaluable = if (args.size == 2) {
                         { x: Double ->
                             Math.pow(args[0](x), args[1](x))
                         }
-                    } else error("pow has one argument")
+                    } else error("pow has two arguments")
                     f
                 }
                 varName -> { x: Double -> x }
